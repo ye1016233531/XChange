@@ -1,3 +1,0 @@
-### Get Server Time
-GET {{api_host}}/api/v2/public/time
-
