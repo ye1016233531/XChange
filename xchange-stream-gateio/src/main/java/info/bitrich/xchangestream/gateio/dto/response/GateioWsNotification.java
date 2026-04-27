@@ -7,8 +7,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import info.bitrich.xchangestream.gateio.config.Config;
 import info.bitrich.xchangestream.gateio.dto.Event;
+import info.bitrich.xchangestream.gateio.config.FuturesConfig;
 import info.bitrich.xchangestream.gateio.dto.response.balance.GateioMultipleSpotBalanceNotification;
 import info.bitrich.xchangestream.gateio.dto.response.orderbook.GateioOrderBookNotification;
+import info.bitrich.xchangestream.gateio.dto.response.ticker.GateioMultipleKlinesNotification;
 import info.bitrich.xchangestream.gateio.dto.response.ticker.GateioTickerNotification;
 import info.bitrich.xchangestream.gateio.dto.response.trade.GateioTradeNotification;
 import info.bitrich.xchangestream.gateio.dto.response.usertrade.GateioMultipleUserTradeNotification;
@@ -24,7 +26,8 @@ import org.knowm.xchange.gateio.config.converter.TimestampSecondsToInstantConver
   @Type(value = GateioTickerNotification.class, name = Config.SPOT_TICKERS_CHANNEL),
   @Type(value = GateioOrderBookNotification.class, name = Config.SPOT_ORDERBOOK_CHANNEL),
   @Type(value = GateioMultipleSpotBalanceNotification.class, name = Config.SPOT_BALANCES_CHANNEL),
-  @Type(value = GateioMultipleUserTradeNotification.class, name = Config.SPOT_USER_TRADES_CHANNEL)
+  @Type(value = GateioMultipleUserTradeNotification.class, name = Config.SPOT_USER_TRADES_CHANNEL),
+  @Type(value = GateioMultipleKlinesNotification.class, name = FuturesConfig.FUTURES_KLINES_CHANNEL)
 })
 @Data
 @SuperBuilder

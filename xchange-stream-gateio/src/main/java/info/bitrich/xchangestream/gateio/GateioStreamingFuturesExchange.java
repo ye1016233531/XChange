@@ -1,39 +1,37 @@
 package info.bitrich.xchangestream.gateio;
 
 import info.bitrich.xchangestream.core.*;
-import info.bitrich.xchangestream.gateio.config.Config;
+import info.bitrich.xchangestream.gateio.config.FuturesConfig;
 import io.reactivex.rxjava3.core.Completable;
 import org.knowm.xchange.ExchangeSpecification;
 import org.knowm.xchange.gateio.GateioExchange;
 
-public class GateioStreamingExchange extends GateioExchange implements StreamingExchange {
+public class GateioStreamingFuturesExchange extends GateioExchange implements StreamingExchange {
 
-  private GateioStreamingService streamingService;
-  private GateioStreamingFuturesService streamingFuturesService;
-  private StreamingMarketDataService streamingMarketDataService;
+  private GateioStreamingFuturesService streamingService;
+  private GateioStreamingFuturesMarketDataService streamingMarketDataService;
   private StreamingTradeService streamingTradeService;
   private StreamingAccountService streamingAccountService;
 
-  public GateioStreamingExchange() {}
+  public GateioStreamingFuturesExchange() {}
 
   @Override
   public Completable connect(ProductSubscription... args) {
     streamingService =
-        new GateioStreamingService(
+        new GateioStreamingFuturesService(
             exchangeSpecification.getSslUri(),
             exchangeSpecification.getApiKey(),
             exchangeSpecification.getSecretKey());
     applyStreamingSpecification(exchangeSpecification, streamingService);
-    streamingMarketDataService = new GateioStreamingMarketDataService(streamingService);
-    streamingTradeService = new GateioStreamingTradeService(streamingService);
-    streamingAccountService = new GateioStreamingAccountService(streamingService);
+    streamingMarketDataService = new GateioStreamingFuturesMarketDataService(streamingService);
+
 
     return streamingService.connect();
   }
 
   @Override
   public Completable disconnect() {
-    GateioStreamingService service = streamingService;
+    GateioStreamingFuturesService service = streamingService;
     streamingService = null;
     streamingMarketDataService = null;
     streamingTradeService = null;
@@ -70,7 +68,7 @@ public class GateioStreamingExchange extends GateioExchange implements Streaming
   public ExchangeSpecification getDefaultExchangeSpecification() {
     ExchangeSpecification specification = super.getDefaultExchangeSpecification();
     specification.setShouldLoadRemoteMetaData(false);
-    specification.setSslUri(Config.V4_URL);
+    specification.setSslUri(FuturesConfig.V4_URL);
     return specification;
   }
 }

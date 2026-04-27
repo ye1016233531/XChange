@@ -219,4 +219,23 @@ public class CandleStick {
           askSize);
     }
   }
+
+  @Override
+  public String toString() {
+    return "CandleStick{" +
+            "timestamp=" + timestamp +
+            ", open=" + open +
+            ", last=" + last +
+            ", high=" + high +
+            ", low=" + low +
+            ", close=" + close +
+            ", volume=" + volume +
+            ", quotaVolume=" + quotaVolume +
+            ", vwap=" + vwap +
+            ", bid=" + bid +
+            ", bidSize=" + bidSize +
+            ", ask=" + ask +
+            ", askSize=" + askSize +
+            '}';
+  }
 }

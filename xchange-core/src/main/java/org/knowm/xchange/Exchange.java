@@ -8,6 +8,7 @@ import org.knowm.xchange.exceptions.ExchangeException;
 import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
 import org.knowm.xchange.instrument.Instrument;
 import org.knowm.xchange.service.account.AccountService;
+import org.knowm.xchange.service.marketdata.FuturesMarketDataService;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 import org.knowm.xchange.service.trade.TradeService;
 import si.mazi.rescu.SynchronizedValueFactory;
@@ -88,6 +89,16 @@ public interface Exchange {
    * @return The exchange's market data service
    */
   MarketDataService getMarketDataService();
+
+  /**
+   * A market data service typically consists of a regularly updated list of the available prices
+   * for the various symbols
+   *
+   * <p>This is the non-streaming (blocking) version of the service
+   *
+   * @return The exchange's market data service
+   */
+  FuturesMarketDataService getFuturesMarketDataService();
 
   /**
    * An trade service typically provides access to trading functionality

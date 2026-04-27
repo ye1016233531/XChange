@@ -4,25 +4,43 @@ import info.bitrich.xchangestream.gateio.dto.response.balance.BalancePayload;
 import info.bitrich.xchangestream.gateio.dto.response.balance.GateioSingleSpotBalanceNotification;
 import info.bitrich.xchangestream.gateio.dto.response.orderbook.GateioOrderBookNotification;
 import info.bitrich.xchangestream.gateio.dto.response.orderbook.OrderBookPayload;
+import info.bitrich.xchangestream.gateio.dto.response.ticker.GateioSingleFuturesKlinesNotification;
 import info.bitrich.xchangestream.gateio.dto.response.ticker.GateioTickerNotification;
+import info.bitrich.xchangestream.gateio.dto.response.ticker.KlinePayload;
 import info.bitrich.xchangestream.gateio.dto.response.ticker.TickerPayload;
 import info.bitrich.xchangestream.gateio.dto.response.trade.GateioTradeNotification;
 import info.bitrich.xchangestream.gateio.dto.response.trade.TradePayload;
 import info.bitrich.xchangestream.gateio.dto.response.usertrade.GateioSingleUserTradeNotification;
 import info.bitrich.xchangestream.gateio.dto.response.usertrade.UserTradePayload;
+
+import java.time.Instant;
 import java.util.Date;
+import java.util.Locale;
 import java.util.stream.Stream;
 import lombok.experimental.UtilityClass;
 import org.knowm.xchange.dto.Order.OrderType;
 import org.knowm.xchange.dto.account.Balance;
+import org.knowm.xchange.dto.marketdata.CandleStick;
 import org.knowm.xchange.dto.marketdata.OrderBook;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.knowm.xchange.dto.marketdata.Trade;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.UserTrade;
+import org.knowm.xchange.instrument.Instrument;
 
 @UtilityClass
 public class GateioStreamingAdapters {
+
+  public String toString(Instrument instrument) {
+    if (instrument == null) {
+      return null;
+    } else {
+      return String.format(
+                      "%s_%s",
+                      instrument.getBase().getCurrencyCode(), instrument.getCounter().getCurrencyCode())
+              .toUpperCase(Locale.ROOT);
+    }
+  }
 
   public Ticker toTicker(GateioTickerNotification notification) {
     TickerPayload tickerPayload = notification.getResult();
@@ -111,5 +129,19 @@ public class GateioStreamingAdapters {
                         priceSizeEntry.getPrice()));
 
     return new OrderBook(Date.from(orderBookPayload.getTimestamp()), asks, bids);
+  }
+
+  public CandleStick toCandleStick(GateioSingleFuturesKlinesNotification payload) {
+    KlinePayload kline = payload.getResult();
+    return new CandleStick.Builder()
+            .open(kline.getOpen())
+            .high(kline.getHigh())
+            .low(kline.getLow())
+            .close(kline.getClose())
+            .volume(kline.getVolume())
+            .quotaVolume(kline.getAmount())
+            .timestamp(Date.from(Instant.ofEpochSecond(kline.getTimestamp())))
+            .build();
+
   }
 }

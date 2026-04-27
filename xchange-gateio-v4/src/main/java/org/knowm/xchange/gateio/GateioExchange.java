@@ -8,6 +8,7 @@ import org.knowm.xchange.ExchangeSpecification;
 import org.knowm.xchange.dto.meta.ExchangeMetaData;
 import org.knowm.xchange.dto.meta.InstrumentMetaData;
 import org.knowm.xchange.gateio.service.GateioAccountService;
+import org.knowm.xchange.gateio.service.GateioFuturesMarketDataService;
 import org.knowm.xchange.gateio.service.GateioMarketDataService;
 import org.knowm.xchange.gateio.service.GateioTradeService;
 import org.knowm.xchange.instrument.Instrument;
@@ -22,6 +23,7 @@ public class GateioExchange extends BaseExchange {
   @Override
   protected void initServices() {
     marketDataService = new GateioMarketDataService(this);
+    futuresMarketDataService = new GateioFuturesMarketDataService(this);
     accountService = new GateioAccountService(this);
     tradeService = new GateioTradeService(this);
   }

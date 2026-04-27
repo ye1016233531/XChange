@@ -13,6 +13,7 @@ import org.knowm.xchange.exceptions.ExchangeException;
 import org.knowm.xchange.instrument.Instrument;
 import org.knowm.xchange.service.BaseExchangeService;
 import org.knowm.xchange.service.account.AccountService;
+import org.knowm.xchange.service.marketdata.FuturesMarketDataService;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 import org.knowm.xchange.service.trade.TradeService;
 import org.knowm.xchange.utils.nonce.CurrentTimeIncrementalNonceFactory;
@@ -26,6 +27,7 @@ public abstract class BaseExchange implements Exchange {
   protected ExchangeSpecification exchangeSpecification;
   protected ExchangeMetaData exchangeMetaData;
   protected MarketDataService marketDataService;
+  protected FuturesMarketDataService futuresMarketDataService;
   protected TradeService tradeService;
   protected AccountService accountService;
 
@@ -183,6 +185,10 @@ public abstract class BaseExchange implements Exchange {
   public MarketDataService getMarketDataService() {
 
     return marketDataService;
+  }
+
+  public FuturesMarketDataService getFuturesMarketDataService() {
+    return futuresMarketDataService;
   }
 
   public TradeService getTradeService() {

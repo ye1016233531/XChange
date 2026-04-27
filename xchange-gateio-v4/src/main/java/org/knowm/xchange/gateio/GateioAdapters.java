@@ -2,6 +2,7 @@ package org.knowm.xchange.gateio;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -12,6 +13,8 @@ import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.Order.OrderStatus;
 import org.knowm.xchange.dto.Order.OrderType;
 import org.knowm.xchange.dto.account.FundingRecord;
+import org.knowm.xchange.dto.marketdata.CandleStick;
+import org.knowm.xchange.dto.marketdata.CandleStickData;
 import org.knowm.xchange.dto.marketdata.OrderBook;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.knowm.xchange.dto.meta.InstrumentMetaData;
@@ -21,6 +24,7 @@ import org.knowm.xchange.dto.trade.UserTrade;
 import org.knowm.xchange.gateio.dto.account.GateioAccountBookRecord;
 import org.knowm.xchange.gateio.dto.account.GateioOrder;
 import org.knowm.xchange.gateio.dto.account.GateioWithdrawalRequest;
+import org.knowm.xchange.gateio.dto.marketdata.GateioContractCandleStick;
 import org.knowm.xchange.gateio.dto.marketdata.GateioCurrencyPairDetails;
 import org.knowm.xchange.gateio.dto.marketdata.GateioOrderBook;
 import org.knowm.xchange.gateio.dto.marketdata.GateioTicker;
@@ -235,6 +239,25 @@ public class GateioAdapters {
         .quoteVolume(gateioTicker.getQuoteVolume())
         .percentageChange(gateioTicker.getChangePercentage24h())
         .build();
+  }
+
+  public CandleStickData toCandleStickData(
+      List<GateioContractCandleStick> raw, CurrencyPair currencyPair) {
+    List<CandleStick> candleSticks = new ArrayList<>();
+    for (GateioContractCandleStick r : raw) {
+      candleSticks.add(
+          new CandleStick.Builder()
+              .timestamp(new Date(r.getTimestamp().longValue() * 1000))
+              .open(new BigDecimal(r.getOpen()))
+              .high(new BigDecimal(r.getHigh()))
+              .low(new BigDecimal(r.getLow()))
+              .close(new BigDecimal(r.getClose()))
+              .last(new BigDecimal(r.getClose()))
+              .volume(new BigDecimal(r.getVolume()))
+              .quotaVolume(new BigDecimal(r.getSum()))
+              .build());
+    }
+    return new CandleStickData(currencyPair, candleSticks);
   }
 
   public FundingRecord toFundingRecords(GateioAccountBookRecord gateioAccountBookRecord) {

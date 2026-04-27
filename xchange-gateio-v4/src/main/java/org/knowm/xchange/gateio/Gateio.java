@@ -9,6 +9,8 @@ import jakarta.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.List;
 import org.knowm.xchange.gateio.dto.GateioException;
+import org.knowm.xchange.gateio.dto.marketdata.GateioContract;
+import org.knowm.xchange.gateio.dto.marketdata.GateioContractCandleStick;
 import org.knowm.xchange.gateio.dto.marketdata.GateioCurrencyChain;
 import org.knowm.xchange.gateio.dto.marketdata.GateioCurrencyInfo;
 import org.knowm.xchange.gateio.dto.marketdata.GateioCurrencyPairDetails;
@@ -52,4 +54,25 @@ public interface Gateio {
   @Path("spot/tickers")
   List<GateioTicker> getTickers(@QueryParam("currency_pair") String currencyPair)
       throws IOException, GateioException;
+
+
+  @GET
+  @Path("futures/{settle}/contracts")
+  List<GateioContract> getFuturesContracts(@PathParam("settle") String settle) throws IOException, GateioException;
+
+  @GET
+  @Path("futures/{settle}/contracts/{contract}")
+  GateioContract getFuturesContract(@PathParam("settle") String settle, @PathParam("contract") String contract)
+      throws IOException, GateioException;
+
+  @GET
+  @Path("futures/{settle}/candlesticks")
+  List<GateioContractCandleStick> getFuturesCandlesticks(
+      @PathParam("settle") String settle,
+      @QueryParam("contract") String contract,
+      @QueryParam("from") Long from,
+      @QueryParam("to") Long to,
+      @QueryParam("limit") Integer limit,
+      @QueryParam("interval") String interval) throws IOException, GateioException;
+
 }

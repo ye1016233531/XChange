@@ -100,6 +100,7 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
 
   private void dealWithTextFrame(TextWebSocketFrame frame) {
     if (frame.isFinalFragment()) {
+      LOG.debug("WebSocket Frame {}", frame.text());
       handler.onMessage(frame.text());
       return;
     }

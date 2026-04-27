@@ -14,8 +14,9 @@
     <name>XChange Gate.io V4</name>
     <description>XChange implementation for the Gate.io Exchange</description>
 
-    <dependencies>
+    <properties />
 
+    <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>

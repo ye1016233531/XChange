@@ -1,13 +1,14 @@
 package info.bitrich.xchangestream.core;
 
 import io.reactivex.rxjava3.core.Observable;
-import java.util.List;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.*;
 import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
 import org.knowm.xchange.instrument.Instrument;
 
-public interface StreamingMarketDataService {
+import java.util.List;
+
+public interface StreamingFuturesMarketDataService {
   /**
    * Get an order book representing the current offered exchange rates (market depth).
    *
@@ -104,9 +105,5 @@ public interface StreamingMarketDataService {
   default Observable<List<OrderBookUpdate>> getOrderBookUpdates(
       Instrument instrument, Object... args) {
     throw new NotYetImplementedForExchangeException("getOrderBookUpdates");
-  }
-
-  default Observable<CandleStick> getKlines(Instrument instrument, boolean isClose, Object... args) {
-    throw new NotYetImplementedForExchangeException("getKlines");
   }
 }
